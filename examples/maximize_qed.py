@@ -7,6 +7,7 @@ from rdkit import RDLogger
 
 from mol_ga.general_ga import run_ga_maximization
 from mol_ga.sample_population import subsample_sorted_population_v1
+from mol_ga.mol_libraries import random_zinc
 from mol_ga import graph_ga
 
 # Basic SMILES that contain different functional groups
@@ -77,10 +78,8 @@ def qed_value(smiles: str) -> float:
     return QED.qed(mol)
 
 if __name__ == "__main__":
-    smiles = "CCOc1ccc2nc(S(N)(=O)=O)sc2c1"
-    print(f"QED value of {smiles} is {qed_value(smiles)}")
     output = run_ga_maximization(
-        starting_population_smiles=[smiles],
+        starting_population_smiles=random_zinc(1000),
         scoring_function=qed_value,
         offspring_gen_func=generate_mols_v1,
         population_sampling_function=subsample_sorted_population_v1,
