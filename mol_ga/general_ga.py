@@ -1,5 +1,5 @@
 """ Main code for running GAs. """
-from typing import List, Tuple, Union, Callable, Set
+from typing import List, Optional, Tuple, Union, Callable, Set
 import logging
 import heapq
 
@@ -28,6 +28,7 @@ def run_ga_maximization(
     max_generations: int,
     population_size: int,
     offspring_size: int,
+    num_population_samples_per_generation: Optional[int] = None,
     patience: int = None,
     max_func_calls: int = None,
     y_transform: callable = None,  # only used if scoring function is not a cached function already
@@ -52,6 +53,7 @@ def run_ga_maximization(
     if logger is None:
         logger = ga_logger
     logger.info("Starting GA maximization...")
+    num_population_samples_per_generation = num_population_samples_per_generation or offspring_size
 
     # Create the cached function
     if not isinstance(scoring_function, CachedFunction):
@@ -130,7 +132,7 @@ def run_ga_maximization(
 
         # Create offspring
         samples_from_population = population_sampling_function(
-            population, 1_000  # TODO: make this a parameter
+            population, num_population_samples_per_generation
         )
         offspring = offspring_gen_func(
             samples_from_population,
