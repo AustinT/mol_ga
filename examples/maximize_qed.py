@@ -5,7 +5,7 @@ from rdkit import Chem
 from rdkit.Chem import QED
 from rdkit import RDLogger
 
-from mol_ga.ga_main import run_ga_maximization
+from mol_ga.general_ga import run_ga_maximization
 from mol_ga import graph_ga
 
 # Basic SMILES that contain different functional groups
