@@ -1,3 +1,4 @@
+from __future__ import annotations
 from rdkit import Chem
 from rdkit.Chem import QED
 
@@ -10,10 +11,13 @@ def qed_value(smiles: str) -> float:
     assert mol is not None
     return QED.qed(mol)
 
+def batch_qed_value(smiles_list: list[str]) -> list[float]:
+    return [qed_value(smiles) for smiles in smiles_list]
+
 if __name__ == "__main__":
     output = default_ga(
         starting_population_smiles=random_zinc(1000),
-        scoring_function=qed_value,
+        scoring_function=batch_qed_value,
         max_generations=10,
         offspring_size=100,
     )

@@ -1,11 +1,12 @@
 """ Main code for running GAs. """
+from __future__ import annotations
 from typing import List, Optional, Tuple, Union, Callable, Set
 import logging
 import heapq
 
 import numpy as np
 
-from .cached_function import CachedFunction
+from .cached_function import CachedBatchFunction, CachedFunction
 
 
 # Logger with standard handler
@@ -22,7 +23,7 @@ if len(ga_logger.handlers) == 0:
 def run_ga_maximization(
     *,
     starting_population_smiles: List[str],
-    scoring_function: Union[callable, CachedFunction],
+    scoring_function: Union[Callable[[list[str]], list[float]], CachedBatchFunction],
     population_sampling_function: Callable[[List[Tuple[float, str]], int], List[str]],
     offspring_gen_func: Callable[[List[str], int], Set[str]],
     max_generations: int,
@@ -56,8 +57,8 @@ def run_ga_maximization(
     num_population_samples_per_generation = num_population_samples_per_generation or offspring_size
 
     # Create the cached function
-    if not isinstance(scoring_function, CachedFunction):
-        scoring_function = CachedFunction(scoring_function, transform=y_transform)
+    if not isinstance(scoring_function, CachedBatchFunction):
+        scoring_function = CachedBatchFunction(scoring_function, transform=y_transform)
     start_cache = dict(scoring_function.cache)
     start_cache_size = len(start_cache)
     logger.debug(f"Starting cache made, has size {start_cache_size}")
