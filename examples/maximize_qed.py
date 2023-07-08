@@ -6,6 +6,7 @@ from rdkit.Chem import QED
 from rdkit import RDLogger
 
 from mol_ga.general_ga import run_ga_maximization
+from mol_ga.sample_population import subsample_sorted_population_v1
 from mol_ga import graph_ga
 
 # Basic SMILES that contain different functional groups
@@ -23,52 +24,11 @@ BASIC_SMILES = [
 ]
 
 
-def subsample_sorted_population_v1(
-    population: List[str],
-    n_sample: int,
-    n_sample_chunks: int = 10,
-    shuffle: bool = True,
-) -> Set[str]:
-    """
-    Sample uniformly from the top N molecules, where N is chosen randomly (generally small).
-
-    Note: assumes that population is in sorted order!!!!!!!
-    """
-
-    top_n_list = [
-        5,
-        10,
-        20,
-        30,
-        40,
-        50,
-        60,
-        75,
-        100,
-        250,
-        1000,
-        10_000,
-        len(population),
-    ]
-
-    # Do sampling
-    chunk_size = int(math.ceil(n_sample / n_sample_chunks))
-    samples = []
-    for _ in range(n_sample_chunks):
-        n = random.choice(top_n_list)
-        samples.extend(random.choices(population=population[:n], k=chunk_size))
-
-    # Shuffle samples to decrease correlations between adjacent samples
-    if shuffle:
-        random.shuffle(samples)
-
-    return samples[:n_sample]  # in case there are slightly too many samples
 
 
 def generate_mols_v1(
-    population: List[str],
+    samples: List[str],
     n_candidates: int,
-    frac_selfies: float = 0.15,
     frac_graph_ga_mutate: float = 0.10,
     frac_graph_ga_basic_smiles: float = 0.15,
 ):
@@ -78,48 +38,27 @@ def generate_mols_v1(
     rd_logger = RDLogger.logger()
     rd_logger.setLevel(RDLogger.CRITICAL)
 
-    # Step 0: discard any Nones from the population
-    population = list(filter(None, population))
-
-    # Step 1: choose population to mutate for candidate generation
-    n_sample_chunks = n_candidates
-    if n_candidates >= 1000:
-        n_sample_chunks = 50
-    elif n_candidates >= 100:
-        n_sample_chunks = 10
-    samples1 = subsample_sorted_population_v1(
-        population=population, n_sample=n_candidates, n_sample_chunks=n_sample_chunks
-    )
-
     # Step 2: set of graph GA mutations (mutation only)
     func_list = []
     arg_tuple_list = []
     n_graph_ga_mutate = int(n_candidates * frac_graph_ga_mutate)
-    curr_samples = samples1[:n_graph_ga_mutate]
-    samples1 = samples1[n_graph_ga_mutate:]
+    samples1 = samples[:n_graph_ga_mutate]
     func_list.append(graph_ga.mutate)
-    arg_tuple_list.append([(s,) for s in curr_samples])
-    del n_graph_ga_mutate, curr_samples
+    arg_tuple_list.append([(s,) for s in samples1])
 
     # Step 4: set of graph GA reproductions
-    curr_samples = samples1  # all remaining samples
-    n_basic = int(len(curr_samples) * frac_graph_ga_basic_smiles)
-
+    n_basic = 100
     samples2 = random.choices(BASIC_SMILES, k=n_basic)  # choose some basic SMILES
-    samples2 += subsample_sorted_population_v1(
-        population=population,
-        n_sample=len(curr_samples) - n_basic,
-        n_sample_chunks=n_sample_chunks,
-        shuffle=False,
-    )
+    samples2 += samples[n_graph_ga_mutate:]
 
     mutation_rates = random.choices(
-        [1e-3, 1e-2, 1e-1], cum_weights=[40, 90, 100], k=len(curr_samples)
+        [1e-3, 1e-2, 1e-1], cum_weights=[40, 90, 100], k=len(samples2)
     )
     random.shuffle(samples2)  # shuffle all together
+    samples3 = list(samples2)  # make a copy
+    random.shuffle(samples3)  # shuffle again
     func_list.append(graph_ga.reproduce)
-    arg_tuple_list.append(list(zip(curr_samples, samples2, mutation_rates)))
-    del curr_samples, n_basic, samples2, mutation_rates
+    arg_tuple_list.append(list(zip(samples3, samples2, mutation_rates)))
 
     # Step 5: run everything, possibly in parallel
     offspring = []
@@ -144,6 +83,7 @@ if __name__ == "__main__":
         starting_population_smiles=[smiles],
         scoring_function=qed_value,
         offspring_gen_func=generate_mols_v1,
+        population_sampling_function=subsample_sorted_population_v1,
         max_generations=10,
         population_size=1000,
         offspring_size=100,

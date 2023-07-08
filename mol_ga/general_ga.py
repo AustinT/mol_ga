@@ -1,5 +1,5 @@
 """ Main code for running GAs. """
-from typing import List, Union, Callable, Set
+from typing import List, Tuple, Union, Callable, Set
 import logging
 import heapq
 
@@ -23,6 +23,7 @@ def run_ga_maximization(
     *,
     starting_population_smiles: List[str],
     scoring_function: Union[callable, CachedFunction],
+    population_sampling_function: Callable[[List[Tuple[float, str]], int], List[str]],
     offspring_gen_func: Callable[[List[str], int], Set[str]],
     max_generations: int,
     population_size: int,
@@ -128,8 +129,11 @@ def run_ga_maximization(
         old_population_smiles = list(population_smiles)
 
         # Create offspring
+        samples_from_population = population_sampling_function(
+            population, 1_000  # TODO: make this a parameter
+        )
         offspring = offspring_gen_func(
-            population_smiles,
+            samples_from_population,
             offspring_size,
         )
         logger.debug(f"\t{len(offspring)} created")
