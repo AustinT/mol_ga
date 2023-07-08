@@ -5,6 +5,21 @@ from pathlib import Path
 from typing import Optional
 
 
+# Basic SMILES that contain different functional groups
+BASIC_SMILES = [
+    "CC=C",  # alkene,
+    "CC#C",  # alkyne,
+    "CC[OH]",  # alcohol
+    "COC",  # ether
+    "CC(=O)[OH]",  # carboxylic acid
+    "CC=O",  # aldehyde
+    "CC(=O)C",  # ketone
+    "CC(=O)N",  # amide
+    "CCN",  # amine
+    "CC#N",  # nitrile
+]
+
+
 def random_zinc(size: int, rng: Optional[random.Random] = None) -> list[str]:
     zinc_path = Path(__file__).parent / "data" / "zinc250k.smiles"
     assert zinc_path.exists() and zinc_path.is_file()
