@@ -4,7 +4,6 @@ import random
 from rdkit import Chem, RDLogger
 
 from . import crossover as co, mutate as mu
-from ..mol_libraries import BASIC_SMILES
 
 
 rd_logger = RDLogger.logger()
@@ -28,8 +27,7 @@ def reproduce(
 
     parent_a = Chem.MolFromSmiles(smiles1)
     parent_b = Chem.MolFromSmiles(smiles2)
-    if crossover_kwargs is None:
-        crossover_kwargs = dict()
+    crossover_kwargs = crossover_kwargs or dict()
     new_child = co.crossover(parent_a, parent_b, **crossover_kwargs)
     if new_child is not None:
         new_child = mu.mutate(new_child, mutation_rate)
@@ -69,15 +67,11 @@ def graph_ga_blended_generation(
     # Step 2: run mutations
     offspring = [mutate(s) for s in samples_mutate]
 
-    # Step 3: run crossover
-    random.shuffle(samples_crossover)
-    # run crossover with shuffled version of list + some basic SMILES strings with minimal functional groups
-    crossover_pairs = list(samples_crossover) + random.choices(BASIC_SMILES, k=len(samples_crossover) // 3)  
+    # Step 3: run crossover betweeen the crossover samples and a shuffled version of itself
+    n_crossover = n_candidates - len(offspring)
+    crossover_pairs = list(samples_crossover)
     random.shuffle(crossover_pairs)
-    mutation_rates = random.choices(
-        [1e-3, 1e-2, 1e-1], cum_weights=[40, 90, 100], k=n_candidates - len(samples_mutate)  # this is the limiting list
-    )
-    offspring += [reproduce(s1, s2, mr) for s1, s2, mr in zip(samples_crossover, crossover_pairs, mutation_rates)]
+    offspring += [reproduce(s1, s2, 1e-2) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)]
 
     # Step 4: post-process and return offspring
     offspring = set(offspring)
