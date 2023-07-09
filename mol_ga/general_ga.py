@@ -41,7 +41,7 @@ def run_ga_maximization(
     # ============================================================
     logger = logger or ga_logger
     logger.info("Starting GA maximization...")
-    num_samples_per_generation = num_samples_per_generation or offspring_size
+    num_samples_per_generation = num_samples_per_generation or 2 * offspring_size
 
     # Create the cached scoring function
     if not isinstance(scoring_func, CachedBatchFunction):

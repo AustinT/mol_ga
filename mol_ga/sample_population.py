@@ -12,7 +12,7 @@ def uniform_qualitle_sampling(
     """Sample SMILES by sampling uniformly from logarithmically spaced top-N."""
 
     samples: list[str] = []
-    quantiles = 1 - np.logspace(-2, 0, 25)
+    quantiles = 1 - np.logspace(-3, 0, 25)
     n_samples_per_quanitile = int(math.ceil(n_sample / len(quantiles)))
     for q in quantiles:
         score_threshold = np.quantile([s for s, _ in population], q)

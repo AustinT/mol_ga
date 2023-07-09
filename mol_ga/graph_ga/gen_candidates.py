@@ -1,6 +1,5 @@
-import logging
+from __future__ import annotations
 import random
-from typing import List
 
 from rdkit import Chem, RDLogger
 
@@ -48,47 +47,39 @@ def mutate(smiles: str):
     return new_mol
 
 
-def generate_mols_v1(
-    samples: List[str],
+def graph_ga_blended_generation(
+    samples: list[str],
     n_candidates: int,
     frac_graph_ga_mutate: float = 0.10,
-    frac_graph_ga_basic_smiles: float = 0.15,
 ):
-    """Generate candiates in a blended way between Graph GA and Graph GA mutate only."""
-    # TODO: clean up this function a lot
+    """
+    Generate candidates with a blend between Graph GA crossover (with some mutation)
+    and Graph GA mutate only. Some minimal functional group SMILES are also included.
+    """
 
     # Turn off logging
     rd_logger = RDLogger.logger()
     rd_logger.setLevel(RDLogger.CRITICAL)
 
-    # Step 2: set of graph GA mutations (mutation only)
-    func_list = []
-    arg_tuple_list = []
+    # Step 1: divide samples into "mutate" and "reproduce" sets
     n_graph_ga_mutate = int(n_candidates * frac_graph_ga_mutate)
-    samples1 = samples[:n_graph_ga_mutate]
-    func_list.append(mutate)
-    arg_tuple_list.append([(s,) for s in samples1])
+    samples_mutate = samples[:n_graph_ga_mutate]
+    samples_crossover = samples[n_graph_ga_mutate:]
 
-    # Step 4: set of graph GA reproductions
-    n_basic = 100
-    samples2 = random.choices(BASIC_SMILES, k=n_basic)  # choose some basic SMILES
-    samples2 += samples[n_graph_ga_mutate:]
+    # Step 2: run mutations
+    offspring = [mutate(s) for s in samples_mutate]
 
+    # Step 3: run crossover
+    random.shuffle(samples_crossover)
+    # run crossover with shuffled version of list + some basic SMILES strings with minimal functional groups
+    crossover_pairs = list(samples_crossover) + random.choices(BASIC_SMILES, k=len(samples_crossover) // 3)  
+    random.shuffle(crossover_pairs)
     mutation_rates = random.choices(
-        [1e-3, 1e-2, 1e-1], cum_weights=[40, 90, 100], k=len(samples2)
+        [1e-3, 1e-2, 1e-1], cum_weights=[40, 90, 100], k=n_candidates - len(samples_mutate)  # this is the limiting list
     )
-    random.shuffle(samples2)  # shuffle all together
-    samples3 = list(samples2)  # make a copy
-    random.shuffle(samples3)  # shuffle again
-    func_list.append(reproduce)
-    arg_tuple_list.append(list(zip(samples3, samples2, mutation_rates)))
+    offspring += [reproduce(s1, s2, mr) for s1, s2, mr in zip(samples_crossover, crossover_pairs, mutation_rates)]
 
-    # Step 5: run everything, possibly in parallel
-    offspring = []
-    for func, args in zip(func_list, arg_tuple_list):
-        offspring += [func(*t) for t in args]
-
-    # Step 6: post-process and return offspring
+    # Step 4: post-process and return offspring
     offspring = set(offspring)
-    offspring.discard(None)
+    offspring.discard(None)  # this sometimes is returned
     return offspring
