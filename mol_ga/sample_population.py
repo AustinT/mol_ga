@@ -1,42 +1,23 @@
-from typing import List, Set, Tuple
+from __future__ import annotations
 import math
 import random
 
-def subsample_sorted_population_v1(
-    population: List[Tuple[float, str]],
+import numpy as np
+
+def uniform_qualitle_sampling(
+    population: list[tuple[float, str]],
     n_sample: int,
-    n_sample_chunks: int = 10,
     shuffle: bool = True,
-) -> Set[str]:
-    """
-    Sample uniformly from the top N molecules, where N is chosen randomly (generally small).
-    """
+) -> list[str]:
+    """Sample SMILES by sampling uniformly from logarithmically spaced top-N."""
 
-    population.sort(reverse=True)
-    population = [s for _, s in population]  # only SMILES
-
-    top_n_list = [
-        5,
-        10,
-        20,
-        30,
-        40,
-        50,
-        60,
-        75,
-        100,
-        250,
-        1000,
-        10_000,
-        len(population),
-    ]
-
-    # Do sampling
-    chunk_size = int(math.ceil(n_sample / n_sample_chunks))
-    samples = []
-    for _ in range(n_sample_chunks):
-        n = random.choice(top_n_list)
-        samples.extend(random.choices(population=population[:n], k=chunk_size))
+    samples: list[str] = []
+    quantiles = 1 - np.logspace(-2, 0, 25)
+    n_samples_per_quanitile = int(math.ceil(n_sample / len(quantiles)))
+    for q in quantiles:
+        score_threshold = np.quantile([s for s, _ in population], q)
+        eligible_population = [smiles for score, smiles in population if score >= score_threshold]
+        samples.extend(random.choices(population=eligible_population, k=n_samples_per_quanitile))
 
     # Shuffle samples to decrease correlations between adjacent samples
     if shuffle:

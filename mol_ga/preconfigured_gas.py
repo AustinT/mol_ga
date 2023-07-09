@@ -2,7 +2,7 @@ from __future__ import annotations
 import heapq
 
 from mol_ga.graph_ga.gen_candidates import generate_mols_v1
-from mol_ga.sample_population import subsample_sorted_population_v1
+from mol_ga.sample_population import uniform_qualitle_sampling
 from mol_ga.general_ga import run_ga_maximization
 
 def default_ga(
@@ -11,7 +11,7 @@ def default_ga(
     max_generations: int,
     offspring_size: int,
     offspring_gen_func=generate_mols_v1,
-    population_sampling_function=subsample_sorted_population_v1,
+    population_sampling_function=uniform_qualitle_sampling,
     population_size=10_000,
 ):
     return run_ga_maximization(
