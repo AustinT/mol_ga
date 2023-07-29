@@ -2,6 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from pprint import pformat
+import random
 from typing import Any, Optional, Union, Callable
 import logging
 
@@ -26,11 +27,12 @@ def run_ga_maximization(
     scoring_func: Union[Callable[[list[str]], list[float]], CachedBatchFunction],
     starting_population_smiles: set[str],
     sampling_func: Callable[[list[tuple[float, str]], int], list[str]],
-    offspring_gen_func: Callable[[int, list[str]], set[str]],
+    offspring_gen_func: Callable[[int, list[str], random.Random], set[str]],
     selection_func: Callable[[list[tuple[float, str]], int], list[tuple[float, str]]],
     max_generations: int,
     population_size: int,
     offspring_size: int,
+    rng: Optional[random.Random] = None,
     num_samples_per_generation: Optional[int] = None,
     logger: Optional[logging.Logger] = None,
 ):
@@ -42,6 +44,7 @@ def run_ga_maximization(
     logger = logger or ga_logger
     logger.info("Starting GA maximization...")
     num_samples_per_generation = num_samples_per_generation or 2 * offspring_size
+    rng = rng or random.Random()
 
     # Create the cached scoring function
     if not isinstance(scoring_func, CachedBatchFunction):
@@ -89,6 +92,7 @@ def run_ga_maximization(
         offspring = offspring_gen_func(
             samples_from_population,
             offspring_size,
+            rng,
         )
 
         # Add to population, ensuring uniqueness
