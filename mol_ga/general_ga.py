@@ -6,6 +6,7 @@ import random
 from typing import Any, Optional, Union, Callable
 import logging
 
+import joblib
 import numpy as np
 
 from .cached_function import CachedBatchFunction
@@ -27,7 +28,7 @@ def run_ga_maximization(
     scoring_func: Union[Callable[[list[str]], list[float]], CachedBatchFunction],
     starting_population_smiles: set[str],
     sampling_func: Callable[[list[tuple[float, str]], int], list[str]],
-    offspring_gen_func: Callable[[int, list[str], random.Random], set[str]],
+    offspring_gen_func: Callable[[int, list[str], random.Random, Optional[joblib.Parallel]], set[str]],
     selection_func: Callable[[list[tuple[float, str]], int], list[tuple[float, str]]],
     max_generations: int,
     population_size: int,
@@ -35,6 +36,7 @@ def run_ga_maximization(
     rng: Optional[random.Random] = None,
     num_samples_per_generation: Optional[int] = None,
     logger: Optional[logging.Logger] = None,
+    parallel: Optional[joblib.Parallel] = None,
 ):
     """Runs a genetic algorithm to maximize `scoring_func`."""
 
@@ -93,6 +95,7 @@ def run_ga_maximization(
             samples_from_population,
             offspring_size,
             rng,
+            parallel,
         )
 
         # Add to population, ensuring uniqueness

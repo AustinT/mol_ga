@@ -1,6 +1,8 @@
 from __future__ import annotations
 from random import Random
+from typing import Optional
 
+import joblib
 from rdkit import Chem, RDLogger
 
 from . import crossover as co, mutate as mu
@@ -49,6 +51,7 @@ def graph_ga_blended_generation(
     samples: list[str],
     n_candidates: int,
     rng: Random,
+    parallel: Optional[joblib.Parallel] = None,
     frac_graph_ga_mutate: float = 0.10,
 ):
     """
@@ -66,13 +69,22 @@ def graph_ga_blended_generation(
     samples_crossover = samples[n_graph_ga_mutate:]
 
     # Step 2: run mutations
-    offspring = [mutate(s, rng) for s in samples_mutate]
+    if parallel:
+        offspring = parallel(joblib.delayed(mutate)(s, rng) for s in samples_mutate)
+    else:
+        offspring = [mutate(s, rng) for s in samples_mutate]
 
     # Step 3: run crossover betweeen the crossover samples and a shuffled version of itself
     n_crossover = n_candidates - len(offspring)
     crossover_pairs = list(samples_crossover)
     rng.shuffle(crossover_pairs)
-    offspring += [reproduce(s1, s2, 1e-2, rng) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)]
+    crossover_mut_rate = 1e-2
+    if parallel:
+        offspring += parallel(
+            joblib.delayed(reproduce)(s1, s2, crossover_mut_rate, rng) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)
+        )
+    else:
+        offspring += [reproduce(s1, s2, crossover_mut_rate, rng) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)]
 
     # Step 4: post-process and return offspring
     offspring = set(offspring)
