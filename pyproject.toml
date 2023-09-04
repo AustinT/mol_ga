@@ -1,12 +1,11 @@
 [build-system]
-# Minimum requirements for the build system to execute
-# Chosen to allow versioning via git tags
+# Minimum requirements for the build system to execute.
+# Chosen to allow versioning via git tags.
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mol_ga"
-# NOTE: emails excluded because it rendered weirdly on PyPI
 authors = [
     {name = "Austin Tripp", email = "ajt212[at]cam.ac.uk"},
 ]
