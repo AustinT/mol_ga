@@ -186,14 +186,12 @@ def crossover(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
 
     for _ in range(10):
         if rng.random() <= 0.5:
-            # print 'non-ring crossover'
             new_mol = crossover_non_ring(parent_A, parent_B, rng=rng, **mol_ok_kwargs)
             if new_mol is not None:
                 new_smiles = Chem.MolToSmiles(new_mol)
                 if new_smiles is not None and new_smiles not in parent_smiles:
                     return new_mol
         else:
-            # print 'ring crossover'
             new_mol = crossover_ring(parent_A, parent_B, rng=rng, **mol_ok_kwargs)
             if new_mol is not None:
                 new_smiles = Chem.MolToSmiles(new_mol)

@@ -116,9 +116,7 @@ def change_atom(mol, rng: Random):
     return "[X:1]>>[Y:1]".replace("X", X).replace("Y", Y)
 
 
-def mutate(mol, mutation_rate: float, rng: Random):
-    if rng.random() > mutation_rate:
-        return mol
+def mutate(mol, rng: Random):
 
     try:
         Chem.Kekulize(mol, clearAromaticFlags=True)
@@ -137,8 +135,6 @@ def mutate(mol, mutation_rate: float, rng: Random):
         rxn_smarts_list[6] = append_atom(rng)
         rxn_smarts = rng.choices(rxn_smarts_list, weights=p)[0]
 
-        # print 'mutation',rxn_smarts
-
         rxn = AllChem.ReactionFromSmarts(rxn_smarts)
 
         new_mol_trial = rxn.RunReactants((mol,))
@@ -146,7 +142,6 @@ def mutate(mol, mutation_rate: float, rng: Random):
         new_mols = []
         for m in new_mol_trial:
             m = m[0]
-            # print Chem.MolToSmiles(mol),mol_ok(mol)
             if co.mol_ok(m, rng) and co.ring_OK(m):
                 new_mols.append(m)
 

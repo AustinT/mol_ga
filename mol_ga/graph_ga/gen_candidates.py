@@ -31,8 +31,8 @@ def reproduce(
     parent_b = Chem.MolFromSmiles(smiles2)
     crossover_kwargs = crossover_kwargs or dict()
     new_child = co.crossover(parent_a, parent_b, rng, **crossover_kwargs)
-    if new_child is not None:
-        new_child = mu.mutate(new_child, mutation_rate, rng)
+    if new_child is not None and rng.random() < mutation_rate:
+        new_child = mu.mutate(new_child, rng)
     if new_child is not None:
         new_child = Chem.MolToSmiles(new_child, canonical=True)
     return new_child
@@ -41,7 +41,7 @@ def reproduce(
 def mutate(smiles: str, rng: Random):
     """Performs Graph GA mutations on a SMILES string"""
     mol = Chem.MolFromSmiles(smiles)
-    new_mol = mu.mutate(mol, 1.0, rng)  # mutate with certainty
+    new_mol = mu.mutate(mol, rng)
     if new_mol is not None:
         new_mol = Chem.MolToSmiles(new_mol, canonical=True, isomericSmiles=True)
     return new_mol
