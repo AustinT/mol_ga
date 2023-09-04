@@ -1,3 +1,48 @@
+[build-system]
+# Minimum requirements for the build system to execute
+# Chosen to allow versioning via git tags
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mol_ga"
+# NOTE: emails excluded because it rendered weirdly on PyPI
+authors = [
+    {name = "Austin Tripp", email = "ajt212[at]cam.ac.uk"},
+]
+description = "Simple genetic algorithms for 2D molecular design."
+keywords = ["genetic algorithm", "molecule", "chemistry"]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+dynamic = ["version"]  # version is set from git tags
+
+dependencies = [
+  "numpy",
+  "rdkit",
+  "joblib",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pre-commit"
+]
+
+[project.urls]
+Homepage = "https://github.com/AustinT/mol_ga"
+Repository = "https://github.com/AustinT/mol_ga.git"
+
+[tool.setuptools]
+# Specifies location of package to install
+# Guidance from: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+packages = ["mol_ga"]
+
+[tool.setuptools.package-data]
+# Include type hints for mypy when installing package.
+"mol_ga" = ["py.typed"]
+
+[tool.setuptools_scm]
 
 [tool.black]
 line-length = 120
