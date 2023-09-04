@@ -1,12 +1,15 @@
 """ Code for functions which cache inputs for efficiency. """
 from __future__ import annotations
+
 from typing import Optional
 
 
 class CachedFunction:
     """Function which caches previously computed values to avoid repeat computation."""
 
-    def __init__(self, f: callable, cache: dict = None, transform: callable = None, max_cache_size: Optional[int] = None):
+    def __init__(
+        self, f: callable, cache: dict = None, transform: callable = None, max_cache_size: Optional[int] = None
+    ):
         """Init function
 
         :param f: The function to cache
@@ -40,7 +43,6 @@ class CachedFunction:
             self.cache.clear()
 
     def eval_batch(self, inputs):
-
         # Eval function at non-cached inputs
         inputs_not_cached = [x for x in inputs if x not in self.cache]
         outputs_not_cached = self._batch_f_eval(inputs_not_cached)
@@ -55,7 +57,6 @@ class CachedFunction:
         return outputs
 
     def eval_non_batch(self, inputs):
-
         inputs = [inputs]
         outputs = self.eval_batch(inputs)
         assert len(outputs) == 1
@@ -63,13 +64,12 @@ class CachedFunction:
         return outputs
 
     def __call__(self, inputs, batch=True):
-
         # Ensure it is in batch form
         if batch:
-            output =  self.eval_batch(inputs)
+            output = self.eval_batch(inputs)
         else:
-            output =  self.eval_non_batch(inputs)
-        
+            output = self.eval_non_batch(inputs)
+
         self._trim_cache()
         return output
 

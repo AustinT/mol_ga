@@ -11,9 +11,7 @@ def cut(mol, rng: Random):
     if not mol.HasSubstructMatch(Chem.MolFromSmarts("[*]-;!@[*]")):
         return None
 
-    bis = rng.choice(
-        mol.GetSubstructMatches(Chem.MolFromSmarts("[*]-;!@[*]"))
-    )  # single bond not in ring
+    bis = rng.choice(mol.GetSubstructMatches(Chem.MolFromSmarts("[*]-;!@[*]")))  # single bond not in ring
 
     bs = [mol.GetBondBetweenAtoms(bis[0], bis[1]).GetIdx()]
 
@@ -26,14 +24,11 @@ def cut(mol, rng: Random):
 
 
 def cut_ring(mol, rng: Random):
-
     for _ in range(10):
         if rng.random() < 0.5:
             if not mol.HasSubstructMatch(Chem.MolFromSmarts("[R]@[R]@[R]@[R]")):
                 return None
-            bis = rng.choice(
-                mol.GetSubstructMatches(Chem.MolFromSmarts("[R]@[R]@[R]@[R]"))
-            )
+            bis = rng.choice(mol.GetSubstructMatches(Chem.MolFromSmarts("[R]@[R]@[R]@[R]")))
             bis = (
                 (bis[0], bis[1]),
                 (bis[2], bis[3]),
@@ -41,9 +36,7 @@ def cut_ring(mol, rng: Random):
         else:
             if not mol.HasSubstructMatch(Chem.MolFromSmarts("[R]@[R;!D2]@[R]")):
                 return None
-            bis = rng.choice(
-                mol.GetSubstructMatches(Chem.MolFromSmarts("[R]@[R;!D2]@[R]"))
-            )
+            bis = rng.choice(mol.GetSubstructMatches(Chem.MolFromSmarts("[R]@[R;!D2]@[R]")))
             bis = (
                 (bis[0], bis[1]),
                 (bis[1], bis[2]),
@@ -51,9 +44,7 @@ def cut_ring(mol, rng: Random):
 
         bs = [mol.GetBondBetweenAtoms(x, y).GetIdx() for x, y in bis]
 
-        fragments_mol = Chem.FragmentOnBonds(
-            mol, bs, addDummies=True, dummyLabels=[(1, 1), (1, 1)]
-        )
+        fragments_mol = Chem.FragmentOnBonds(mol, bs, addDummies=True, dummyLabels=[(1, 1), (1, 1)])
 
         try:
             fragments = Chem.GetMolFrags(fragments_mol, asMols=True, sanitizeFrags=True)
@@ -75,9 +66,7 @@ def ring_OK(mol):
     max_cycle_length = max([len(j) for j in cycle_list])
     macro_cycle = max_cycle_length > 6
 
-    double_bond_in_small_ring = mol.HasSubstructMatch(
-        Chem.MolFromSmarts("[r3,r4]=[r3,r4]")
-    )
+    double_bond_in_small_ring = mol.HasSubstructMatch(Chem.MolFromSmarts("[r3,r4]=[r3,r4]"))
 
     return not ring_allene and not macro_cycle and not double_bond_in_small_ring
 
@@ -102,9 +91,7 @@ def mol_ok(
 
 def crossover_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
     ring_smarts = Chem.MolFromSmarts("[R]")
-    if not parent_A.HasSubstructMatch(ring_smarts) and not parent_B.HasSubstructMatch(
-        ring_smarts
-    ):
+    if not parent_A.HasSubstructMatch(ring_smarts) and not parent_B.HasSubstructMatch(ring_smarts):
         return None
 
     rxn_smarts1 = [
@@ -152,7 +139,6 @@ def crossover_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
 
 
 def crossover_non_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
-
     for i in range(10):
         fragments_A = cut(parent_A, rng)
         fragments_B = cut(parent_B, rng)

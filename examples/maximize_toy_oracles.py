@@ -1,6 +1,7 @@
 """Maximize any number of toy oracle functions."""
 
 from __future__ import annotations
+
 import argparse
 import logging
 import time
@@ -17,9 +18,7 @@ except ImportError:
 from mol_ga.mol_libraries import random_zinc
 from mol_ga.preconfigured_gas import default_ga
 
-
 if __name__ == "__main__":
-
     logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser()
     parser.add_argument("--oracle", type=str, default="qed")
@@ -46,7 +45,7 @@ if __name__ == "__main__":
     print("Top few scores:")
     print(top_100_scores[:25])
     print(f"Time elapsed: {end_time - start_time:.2f} seconds")
-    guacamol_top1_10_100_score = (
-        top_100_scores[0] + np.mean(top_100_scores[:10]) + np.mean(top_100_scores[:100])
-    ) / 3
-    print(f"Average of top 1, top 10, and top 100 scores (reported metric in Guacamol): {guacamol_top1_10_100_score:.2f}")
+    guacamol_top1_10_100_score = (top_100_scores[0] + np.mean(top_100_scores[:10]) + np.mean(top_100_scores[:100])) / 3
+    print(
+        f"Average of top 1, top 10, and top 100 scores (reported metric in Guacamol): {guacamol_top1_10_100_score:.2f}"
+    )

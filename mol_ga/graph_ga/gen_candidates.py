@@ -1,12 +1,13 @@
 from __future__ import annotations
+
 from random import Random
 from typing import Optional
 
 import joblib
 from rdkit import Chem, RDLogger
 
-from . import crossover as co, mutate as mu
-
+from . import crossover as co
+from . import mutate as mu
 
 rd_logger = RDLogger.logger()
 
@@ -81,10 +82,14 @@ def graph_ga_blended_generation(
     crossover_mut_rate = 1e-2
     if parallel:
         offspring += parallel(
-            joblib.delayed(reproduce)(s1, s2, crossover_mut_rate, rng) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)
+            joblib.delayed(reproduce)(s1, s2, crossover_mut_rate, rng)
+            for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)
         )
     else:
-        offspring += [reproduce(s1, s2, crossover_mut_rate, rng) for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)]
+        offspring += [
+            reproduce(s1, s2, crossover_mut_rate, rng)
+            for s1, s2 in zip(samples_crossover[:n_crossover], crossover_pairs)
+        ]
 
     # Step 4: post-process and return offspring
     offspring = set(offspring)

@@ -9,7 +9,7 @@ from . import crossover as co
 rdBase.DisableLog("rdApp.error")
 
 
-def delete_atom(rng: Random,):
+def delete_atom(rng: Random):
     choices = [
         "[*:1]~[D1:2]>>[*:1]",
         "[*:1]~[D2:2]~[*:3]>>[*:1]-[*:3]",
@@ -118,7 +118,6 @@ def change_atom(mol, rng: Random):
 
 
 def mutate(mol: Chem.Mol, rng: Random) -> Optional[Chem.Mol]:
-
     try:
         Chem.Kekulize(mol, clearAromaticFlags=True)
     except ValueError:

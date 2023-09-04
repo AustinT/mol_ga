@@ -6,7 +6,6 @@ from typing import Optional
 
 from rdkit import Chem
 
-
 # Basic SMILES that contain different functional groups
 BASIC_SMILES = [
     "CC=C",  # alkene,
@@ -28,7 +27,7 @@ def random_zinc(size: int, rng: Optional[random.Random] = None) -> list[str]:
     assert zinc_path.exists() and zinc_path.is_file()
     with open(zinc_path, "r") as f:
         all_zinc_smiles = f.readlines()
-    
+
     # Remove whitespace and remove empty strings
     all_zinc_smiles = [s.strip() for s in all_zinc_smiles]
     all_zinc_smiles = [s for s in all_zinc_smiles if s]

@@ -1,12 +1,14 @@
 from __future__ import annotations
+
 import heapq
 from typing import Optional
 
 import joblib
 
+from mol_ga.general_ga import GAResults, run_ga_maximization
 from mol_ga.graph_ga.gen_candidates import graph_ga_blended_generation
 from mol_ga.sample_population import uniform_qualitle_sampling
-from mol_ga.general_ga import run_ga_maximization, GAResults
+
 
 def default_ga(
     starting_population_smiles: list[str],

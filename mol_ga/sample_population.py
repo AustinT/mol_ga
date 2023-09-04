@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 import math
 import random
 
 import numpy as np
+
 
 def uniform_qualitle_sampling(
     population: list[tuple[float, str]],

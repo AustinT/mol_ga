@@ -1,23 +1,25 @@
 """ Main code for running GAs. """
 from __future__ import annotations
+
+import logging
+import random
 from dataclasses import dataclass
 from pprint import pformat
-import random
-from typing import Any, Optional, Union, Callable
-import logging
+from typing import Any, Callable, Optional, Union
 
 import joblib
 import numpy as np
 
 from .cached_function import CachedBatchFunction
 
-
 # Logger with standard handler
 ga_logger = logging.getLogger(__name__)
+
 
 @dataclass
 class GAResults:
     """Results from a GA run."""
+
     population: list[tuple[float, str]]
     scoring_func_evals: dict[str, float]
     gen_info: list[dict[str, Any]]
@@ -59,7 +61,7 @@ def run_ga_maximization(
         num_samples_per_generation: Number of samples to take from the population to create offspring.
         logger: Logger to use.
         parallel: Joblib parallel object to use (to generate offspring in parallel).
-    
+
     Returns:
         GAResults object containing the population, scoring function, and information about each generation.
     """
@@ -74,10 +76,11 @@ def run_ga_maximization(
 
     # Create the cached scoring function
     if not isinstance(scoring_func, CachedBatchFunction):
-        scoring_func = CachedBatchFunction(scoring_func, )
+        scoring_func = CachedBatchFunction(
+            scoring_func
+        )
     start_cache_size = len(scoring_func.cache)
     logger.debug(f"Starting cache made, has size {start_cache_size}")
-
 
     # ============================================================
     # 1: prepare initial population
@@ -87,9 +90,7 @@ def run_ga_maximization(
     population_smiles = list(starting_population_smiles)
     population_scores = scoring_func.eval_batch(population_smiles)
     _starting_max_score = max(population_scores)
-    logger.debug(
-        f"Initial population scoring done. Pop size={len(population_smiles)}, Max={_starting_max_score}"
-    )
+    logger.debug(f"Initial population scoring done. Pop size={len(population_smiles)}, Max={_starting_max_score}")
     population = list(zip(population_scores, population_smiles))
     del population_scores, population_smiles, _starting_max_score
 
@@ -103,17 +104,14 @@ def run_ga_maximization(
     # Run GA
     gen_info: list[dict[str, Any]] = []
     for generation in range(max_generations):
-
         logger.info(f"Start generation {generation}")
 
         # Separate out into SMILES and scores
         _, population_smiles = tuple(zip(*population))
 
         # Sample SMILES from population to create offspring
-        samples_from_population = sampling_func(
-            population, num_samples_per_generation
-        )
-        
+        samples_from_population = sampling_func(population, num_samples_per_generation)
+
         # Create the offspring
         offspring = offspring_gen_func(
             samples_from_population,
