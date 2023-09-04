@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 import heapq
-from typing import Optional
-
-import joblib
 
 from mol_ga.general_ga import GAResults, run_ga_maximization
 from mol_ga.graph_ga.gen_candidates import graph_ga_blended_generation
@@ -18,7 +15,7 @@ def default_ga(
     offspring_gen_func=graph_ga_blended_generation,
     population_sampling_function=uniform_qualitle_sampling,
     population_size=10_000,
-    parallel: Optional[joblib.Parallel] = None,
+    **kwargs,
 ) -> GAResults:
     """Genetic algorithm with default parameters for maximizing a scoring function."""
     return run_ga_maximization(
@@ -30,5 +27,5 @@ def default_ga(
         max_generations=max_generations,
         population_size=population_size,
         offspring_size=offspring_size,
-        parallel=parallel,
+        **kwargs,
     )
