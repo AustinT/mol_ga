@@ -30,8 +30,8 @@ def run_ga_maximization(
     scoring_func: Union[Callable[[list[str]], list[float]], CachedBatchFunction],
     starting_population_smiles: set[str],
     sampling_func: Callable[[list[tuple[float, str]], int], list[str]],
-    offspring_gen_func: Callable[[int, list[str], random.Random, Optional[joblib.Parallel]], set[str]],
-    selection_func: Callable[[list[tuple[float, str]], int], list[tuple[float, str]]],
+    offspring_gen_func: Callable[[list[str], int, random.Random, Optional[joblib.Parallel]], set[str]],
+    selection_func: Callable[[int, list[tuple[float, str]]], list[tuple[float, str]]],
     max_generations: int,
     population_size: int,
     offspring_size: int,
@@ -76,9 +76,7 @@ def run_ga_maximization(
 
     # Create the cached scoring function
     if not isinstance(scoring_func, CachedBatchFunction):
-        scoring_func = CachedBatchFunction(
-            scoring_func
-        )
+        scoring_func = CachedBatchFunction(scoring_func)
     start_cache_size = len(scoring_func.cache)
     logger.debug(f"Starting cache made, has size {start_cache_size}")
 
@@ -107,7 +105,7 @@ def run_ga_maximization(
         logger.info(f"Start generation {generation}")
 
         # Separate out into SMILES and scores
-        _, population_smiles = tuple(zip(*population))
+        _, population_smiles = tuple(zip(*population))  # type: ignore[assignment]
 
         # Sample SMILES from population to create offspring
         samples_from_population = sampling_func(population, num_samples_per_generation)
@@ -121,7 +119,7 @@ def run_ga_maximization(
         )
 
         # Add to population, ensuring uniqueness
-        population_smiles = list(set(population_smiles) | offspring)
+        population_smiles = list(set(population_smiles) | offspring)  # type: ignore[misc]  # thinks var deleted
         logger.debug(f"\t{len(offspring)} created")
         logger.debug(f"\tNew population size = {len(population_smiles)}")
         del offspring
@@ -136,7 +134,7 @@ def run_ga_maximization(
         population = selection_func(population_size, population)
 
         # Log results of this generation
-        population_scores, population_smiles = tuple(zip(*population))
+        population_scores, population_smiles = tuple(zip(*population))  # type: ignore[assignment]
         gen_stats_dict = dict(
             max=np.max(population_scores),
             avg=np.mean(population_scores),

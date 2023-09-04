@@ -1,14 +1,18 @@
 """ Code for functions which cache inputs for efficiency. """
 from __future__ import annotations
 
-from typing import Optional
+from typing import Callable, Optional
 
 
 class CachedFunction:
     """Function which caches previously computed values to avoid repeat computation."""
 
     def __init__(
-        self, f: callable, cache: dict = None, transform: callable = None, max_cache_size: Optional[int] = None
+        self,
+        f: Callable,
+        cache: Optional[dict] = None,
+        transform: Optional[Callable] = None,
+        max_cache_size: Optional[int] = None,
     ):
         """Init function
 
@@ -21,9 +25,7 @@ class CachedFunction:
         :type transform: callable, optional
         """
         self._f = f
-        self.cache = cache
-        if self.cache is None:
-            self.cache = dict()
+        self.cache = cache or dict()
         self.transform = transform
         self.max_cache_size = max_cache_size
         self._trim_cache()
