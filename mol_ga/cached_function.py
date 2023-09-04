@@ -1,4 +1,6 @@
 """ Code for functions which cache inputs for efficiency. """
+from __future__ import annotations
+from typing import Optional
 
 
 class CachedFunction:
@@ -6,7 +8,7 @@ class CachedFunction:
     Efficient function which caches previously computed values to avoid repeat computation.
     """
 
-    def __init__(self, f: callable, cache: dict = None, transform: callable = None):
+    def __init__(self, f: callable, cache: dict = None, transform: callable = None, max_cache_size: Optional[int] = None):
         """Init function
 
         :param f: The function to cache
@@ -22,6 +24,8 @@ class CachedFunction:
         if self.cache is None:
             self.cache = dict()
         self.transform = transform
+        self.max_cache_size = max_cache_size
+        self._trim_cache()
 
     def _batch_f_eval(self, input_list):
         return [self._f(x) for x in input_list]
@@ -31,6 +35,11 @@ class CachedFunction:
             return output_list
         else:
             return [self.transform(x) for x in output_list]
+
+    def _trim_cache(self) -> None:
+        """Clears the cache if it is too large."""
+        if self.max_cache_size is not None and len(self.cache) > self.max_cache_size:
+            self.cache.clear()
 
     def eval_batch(self, inputs):
 
@@ -59,9 +68,12 @@ class CachedFunction:
 
         # Ensure it is in batch form
         if batch:
-            return self.eval_batch(inputs)
+            output =  self.eval_batch(inputs)
         else:
-            return self.eval_non_batch(inputs)
+            output =  self.eval_non_batch(inputs)
+        
+        self._trim_cache()
+        return output
 
 
 class CachedBatchFunction(CachedFunction):
