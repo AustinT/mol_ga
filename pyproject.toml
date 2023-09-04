@@ -1,0 +1,24 @@
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+
+[tool.mypy]
+python_version = 3.9  # pin modern python version
+ignore_missing_imports = true
+
+[tool.ruff]
+# Check https://beta.ruff.rs/docs/rules/ for full list of rules
+select = [
+  "E", "W",  # pycodestyle
+  "F",  # Pyflakes
+  "I",  # isort
+]
+ignore = [
+  # W605: invalid escape sequence -- triggered by pseudo-LaTeX in comments
+  "W605",
+  # E501: Line too long -- triggered by comments and such. black deals with shortening.
+  "E501",
+  # E741:  Do not use variables named 'l', 'o', or 'i' -- disagree with PEP8
+  "E741",
+]
