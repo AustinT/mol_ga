@@ -38,7 +38,31 @@ def run_ga_maximization(
     logger: Optional[logging.Logger] = None,
     parallel: Optional[joblib.Parallel] = None,
 ) -> GAResults:
-    """Runs a genetic algorithm to maximize `scoring_func`."""
+    """
+    Runs a genetic algorithm to maximize `scoring_func`.
+
+    Args:
+        scoring_func: Function that takes a list of SMILES and returns a list of scores.
+            Convention: scoring functionis being MAXIMIZED!
+        starting_population_smiles: Set of SMILES to start the GA with.
+        sampling_func: Function that takes a list of (score, smiles) tuples and returns a list of SMILES.
+            This is used to sample SMILES from the population to create offspring.
+        offspring_gen_func: Function that takes a list of SMILES and returns a list of SMILES.
+            This can be anything (e.g. crossover, mutation).
+        selection_func: Function to select the new population.
+            This can be anything from "take the N best scores" to some more complicated method to pick
+            a diverse subset.
+        max_generations: Maximum number of generations to run the GA for.
+        population_size: Number of SMILES to keep in the population.
+        offspring_size: Number of offspring to create per generation.
+        rng: Random number generator.
+        num_samples_per_generation: Number of samples to take from the population to create offspring.
+        logger: Logger to use.
+        parallel: Joblib parallel object to use (to generate offspring in parallel).
+    
+    Returns:
+        GAResults object containing the population, scoring function, and information about each generation.
+    """
 
     # ============================================================
     # 0: Process input variables

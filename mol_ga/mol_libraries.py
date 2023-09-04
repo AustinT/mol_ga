@@ -21,6 +21,7 @@ BASIC_SMILES = [
 
 
 def random_zinc(size: int, rng: Optional[random.Random] = None) -> list[str]:
+    """Return random SMILES from the ZINC250k dataset."""
     zinc_path = Path(__file__).parent / "data" / "zinc250k.smiles"
     assert zinc_path.exists() and zinc_path.is_file()
     with open(zinc_path, "r") as f:

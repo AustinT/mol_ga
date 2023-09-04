@@ -56,7 +56,7 @@ def graph_ga_blended_generation(
 ) -> set[str]:
     """
     Generate candidates with a blend between Graph GA crossover (with some mutation)
-    and Graph GA mutate only. Some minimal functional group SMILES are also included.
+    and Graph GA mutate only.
     """
 
     # Turn off logging

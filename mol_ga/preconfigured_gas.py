@@ -18,6 +18,7 @@ def default_ga(
     population_size=10_000,
     parallel: Optional[joblib.Parallel] = None,
 ) -> GAResults:
+    """Genetic algorithm with default parameters for maximizing a scoring function."""
     return run_ga_maximization(
         starting_population_smiles=starting_population_smiles,
         scoring_func=scoring_function,
