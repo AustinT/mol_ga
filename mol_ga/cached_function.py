@@ -4,9 +4,7 @@ from typing import Optional
 
 
 class CachedFunction:
-    """
-    Efficient function which caches previously computed values to avoid repeat computation.
-    """
+    """Function which caches previously computed values to avoid repeat computation."""
 
     def __init__(self, f: callable, cache: dict = None, transform: callable = None, max_cache_size: Optional[int] = None):
         """Init function

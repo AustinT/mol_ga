@@ -1,4 +1,5 @@
 from random import Random
+from typing import Optional
 
 from rdkit import Chem, rdBase
 from rdkit.Chem import AllChem
@@ -116,7 +117,7 @@ def change_atom(mol, rng: Random):
     return "[X:1]>>[Y:1]".replace("X", X).replace("Y", Y)
 
 
-def mutate(mol, rng: Random):
+def mutate(mol: Chem.Mol, rng: Random) -> Optional[Chem.Mol]:
 
     try:
         Chem.Kekulize(mol, clearAromaticFlags=True)

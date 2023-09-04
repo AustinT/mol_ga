@@ -13,7 +13,7 @@ rd_logger = RDLogger.logger()
 
 def reproduce(
     smiles1: str, smiles2: str, mutation_rate: float, rng: Random, crossover_kwargs: dict = None
-):
+) -> Optional[str]:
     """
 
     Args:
@@ -38,7 +38,7 @@ def reproduce(
     return new_child
 
 
-def mutate(smiles: str, rng: Random):
+def mutate(smiles: str, rng: Random) -> Optional[str]:
     """Performs Graph GA mutations on a SMILES string"""
     mol = Chem.MolFromSmiles(smiles)
     new_mol = mu.mutate(mol, rng)
@@ -53,7 +53,7 @@ def graph_ga_blended_generation(
     rng: Random,
     parallel: Optional[joblib.Parallel] = None,
     frac_graph_ga_mutate: float = 0.10,
-):
+) -> set[str]:
     """
     Generate candidates with a blend between Graph GA crossover (with some mutation)
     and Graph GA mutate only. Some minimal functional group SMILES are also included.

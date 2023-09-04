@@ -37,7 +37,7 @@ def run_ga_maximization(
     num_samples_per_generation: Optional[int] = None,
     logger: Optional[logging.Logger] = None,
     parallel: Optional[joblib.Parallel] = None,
-):
+) -> GAResults:
     """Runs a genetic algorithm to maximize `scoring_func`."""
 
     # ============================================================

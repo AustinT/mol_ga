@@ -1,4 +1,5 @@
 from random import Random
+from typing import Optional
 
 from rdkit import Chem, rdBase
 from rdkit.Chem import AllChem
@@ -175,7 +176,7 @@ def crossover_non_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
     return None
 
 
-def crossover(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
+def crossover(parent_A, parent_B, rng: Random, **mol_ok_kwargs) -> Optional[Chem.Mol]:
     parent_smiles = [Chem.MolToSmiles(parent_A), Chem.MolToSmiles(parent_B)]
     try:
         Chem.Kekulize(parent_A, clearAromaticFlags=True)

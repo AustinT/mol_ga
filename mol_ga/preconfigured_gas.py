@@ -6,7 +6,7 @@ import joblib
 
 from mol_ga.graph_ga.gen_candidates import graph_ga_blended_generation
 from mol_ga.sample_population import uniform_qualitle_sampling
-from mol_ga.general_ga import run_ga_maximization
+from mol_ga.general_ga import run_ga_maximization, GAResults
 
 def default_ga(
     starting_population_smiles: list[str],
@@ -17,7 +17,7 @@ def default_ga(
     population_sampling_function=uniform_qualitle_sampling,
     population_size=10_000,
     parallel: Optional[joblib.Parallel] = None,
-):
+) -> GAResults:
     return run_ga_maximization(
         starting_population_smiles=starting_population_smiles,
         scoring_func=scoring_function,
