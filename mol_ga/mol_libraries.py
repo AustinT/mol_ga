@@ -4,6 +4,8 @@ import random
 from pathlib import Path
 from typing import Optional
 
+from rdkit import Chem
+
 
 # Basic SMILES that contain different functional groups
 BASIC_SMILES = [
@@ -31,6 +33,10 @@ def random_zinc(size: int, rng: Optional[random.Random] = None) -> list[str]:
     all_zinc_smiles = [s.strip() for s in all_zinc_smiles]
     all_zinc_smiles = [s for s in all_zinc_smiles if s]
 
-    # Return random sample
+    # Sample random SMILES
     rng = rng or random.Random()
-    return rng.choices(population=all_zinc_smiles, k=size)
+    chosen_smiles = rng.choices(population=all_zinc_smiles, k=size)
+
+    # Last check: ensure that all SMILES are canonical
+    canon_smiles = [Chem.CanonSmiles(s) for s in chosen_smiles]
+    return [s for s in canon_smiles if s]  # exclude None
