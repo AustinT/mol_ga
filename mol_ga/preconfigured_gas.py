@@ -22,7 +22,7 @@ def default_ga(
 ) -> GAResults:
     """Genetic algorithm with default parameters for maximizing a scoring function."""
     return run_ga_maximization(
-        starting_population_smiles=starting_population_smiles,
+        starting_population_smiles=set(starting_population_smiles),
         scoring_func=scoring_function,
         offspring_gen_func=offspring_gen_func,
         sampling_func=population_sampling_function,

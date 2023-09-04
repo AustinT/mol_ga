@@ -110,7 +110,7 @@ def crossover_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
         if fragments_A is None or fragments_B is None:
             return None
 
-        new_mol_trial = []
+        new_mol_trial = []  # type: ignore  # wants list type
         for rs in rxn_smarts1:
             rxn1 = AllChem.ReactionFromSmarts(rs)
             new_mol_trial = []

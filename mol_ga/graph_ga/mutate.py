@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from random import Random
 from typing import Optional
 
@@ -33,14 +35,14 @@ def append_atom(rng: Random):
     index = rng.choices(list(range(3)), weights=p_BO)[0]
 
     BO, atom_list, p = choices[index]
-    new_atom = rng.choices(atom_list, weights=p)[0]
+    new_atom = rng.choices(atom_list, weights=p)[0]  # type: ignore[arg-type]  # type of p unclear
 
     if BO == "single":
-        rxn_smarts = "[*;!H0:1]>>[*:1]X".replace("X", "-" + new_atom)
+        rxn_smarts = "[*;!H0:1]>>[*:1]X".replace("X", "-" + new_atom)  # type: ignore[operator]
     if BO == "double":
-        rxn_smarts = "[*;!H0;!H1:1]>>[*:1]X".replace("X", "=" + new_atom)
+        rxn_smarts = "[*;!H0;!H1:1]>>[*:1]X".replace("X", "=" + new_atom)  # type: ignore[operator]
     if BO == "triple":
-        rxn_smarts = "[*;H3:1]>>[*:1]X".replace("X", "#" + new_atom)
+        rxn_smarts = "[*;H3:1]>>[*:1]X".replace("X", "#" + new_atom)  # type: ignore[operator]
 
     return rxn_smarts
 
@@ -56,14 +58,14 @@ def insert_atom(rng: Random):
     index = rng.choices(list(range(3)), weights=p_BO)[0]
 
     BO, atom_list, p = choices[index]
-    new_atom = rng.choices(atom_list, weights=p)[0]
+    new_atom = rng.choices(atom_list, weights=p)[0]  # type: ignore[arg-type]  # type of p unclear
 
     if BO == "single":
-        rxn_smarts = "[*:1]~[*:2]>>[*:1]X[*:2]".replace("X", new_atom)
+        rxn_smarts = "[*:1]~[*:2]>>[*:1]X[*:2]".replace("X", new_atom)  # type: ignore[arg-type]
     if BO == "double":
-        rxn_smarts = "[*;!H0:1]~[*:2]>>[*:1]=X-[*:2]".replace("X", new_atom)
+        rxn_smarts = "[*;!H0:1]~[*:2]>>[*:1]=X-[*:2]".replace("X", new_atom)  # type: ignore[arg-type]
     if BO == "triple":
-        rxn_smarts = "[*;!R;!H1;!H0:1]~[*:2]>>[*:1]#X-[*:2]".replace("X", new_atom)
+        rxn_smarts = "[*;!R;!H1;!H0:1]~[*:2]>>[*:1]#X-[*:2]".replace("X", new_atom)  # type: ignore[arg-type]
 
     return rxn_smarts
 

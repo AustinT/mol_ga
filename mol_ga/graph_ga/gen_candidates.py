@@ -13,7 +13,7 @@ rd_logger = RDLogger.logger()
 
 
 def reproduce(
-    smiles1: str, smiles2: str, mutation_rate: float, rng: Random, crossover_kwargs: dict = None
+    smiles1: str, smiles2: str, mutation_rate: float, rng: Random, crossover_kwargs: Optional[dict] = None
 ) -> Optional[str]:
     """
 
