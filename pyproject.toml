@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mol_ga"
 authors = [
-    {name = "Austin Tripp", email = "ajt212[at]cam.ac.uk"},
+    {name = "Austin Tripp"},
 ]
 description = "Simple genetic algorithms for 2D molecular design."
 keywords = ["genetic algorithm", "molecule", "chemistry"]
