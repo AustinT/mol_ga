@@ -161,7 +161,7 @@ I've tried to make many improvements:
 
 - Fix [bug](https://github.com/BenevolentAI/guacamol_baselines/issues/11) where certain molecules can be "lost" from the population during mutation.
 - Randomness can be controlled by passing a `random.Random` object (their implementation just uses the system random)
-- Changed population selection to a method based on _quantiles_ rather than weighted sampling, using the objective function values as the weights. This method had a few disadvantages:
+- Changed population selection to a method based on _quantiles_ rather than weighted sampling, using the objective function values as the weights. The original method had a few disadvantages which are resolved by sampling based on quantiles:
   1. Doesn't work for negative objective functions.
   2. If just one point with a high-score is found, it can easily dominate the sampling.
   3. If the population size is too high, the best molecules get "crowded out" by less good ones.
