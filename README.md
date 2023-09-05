@@ -1,5 +1,10 @@
 # Molecule Genetic Algorithms (mol_ga)
 
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Code Style](https://img.shields.io/badge/code%20style-black-202020.svg)](https://github.com/ambv/black)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
+
 A simple, lightweight python package for genetic algorithms on molecules.
 Key features:
 
