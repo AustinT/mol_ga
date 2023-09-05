@@ -17,10 +17,10 @@ Key features:
 
 ## Installation
 
-Clone this repo and install with:
+Install from [PyPI](https://pypi.org/project/mol-ga/):
 
 ```bash
-pip install .
+pip install mol_ga
 ```
 
 ## Why mol_ga?
