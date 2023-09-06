@@ -90,7 +90,34 @@ Output (remember it is random so results will vary between runs and between mach
 
 ## Citation
 
-There is no citation for now, but I will put a paper on arXiv soon.
+There is no citation for this specific library, but I will put a paper on arXiv soon.
+
+To make this library, I mainly drew on the algorithm from Jensen (2019)
+and the code from the GuacaMol paper.
+Please cite these papers if you use this library in an academic publication:
+
+```
+@article{jensen2019graph,
+  title={A graph-based genetic algorithm and generative model/Monte Carlo tree search for the exploration of chemical space},
+  author={Jensen, Jan H},
+  journal={Chemical science},
+  volume={10},
+  number={12},
+  pages={3567--3572},
+  year={2019},
+  publisher={Royal Society of Chemistry}
+}
+@article{brown2019guacamol,
+  title={GuacaMol: benchmarking models for de novo molecular design},
+  author={Brown, Nathan and Fiscato, Marco and Segler, Marwin HS and Vaucher, Alain C},
+  journal={Journal of chemical information and modeling},
+  volume={59},
+  number={3},
+  pages={1096--1108},
+  year={2019},
+  publisher={ACS Publications}
+}
+```
 
 ## Contributing
 
