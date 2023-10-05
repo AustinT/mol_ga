@@ -29,7 +29,7 @@ def run_ga_maximization(
     *,
     scoring_func: Union[Callable[[list[str]], list[float]], CachedBatchFunction],
     starting_population_smiles: set[str],
-    sampling_func: Callable[[list[tuple[float, str]], int], list[str]],
+    sampling_func: Callable[[list[tuple[float, str]], int, random.Random], list[str]],
     offspring_gen_func: Callable[[list[str], int, random.Random, Optional[joblib.Parallel]], set[str]],
     selection_func: Callable[[int, list[tuple[float, str]]], list[tuple[float, str]]],
     max_generations: int,
@@ -108,7 +108,7 @@ def run_ga_maximization(
         _, population_smiles = tuple(zip(*population))  # type: ignore[assignment]
 
         # Sample SMILES from population to create offspring
-        samples_from_population = sampling_func(population, num_samples_per_generation)
+        samples_from_population = sampling_func(population, num_samples_per_generation, rng)
 
         # Create the offspring
         offspring = offspring_gen_func(

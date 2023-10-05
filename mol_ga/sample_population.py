@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-import random
+from random import Random
 
 import numpy as np
 
@@ -9,6 +9,7 @@ import numpy as np
 def uniform_qualitle_sampling(
     population: list[tuple[float, str]],
     n_sample: int,
+    rng: Random,
     shuffle: bool = True,
 ) -> list[str]:
     """Sample SMILES by sampling uniformly from logarithmically spaced top-N."""
@@ -19,10 +20,10 @@ def uniform_qualitle_sampling(
     for q in quantiles:
         score_threshold = np.quantile([s for s, _ in population], q)
         eligible_population = [smiles for score, smiles in population if score >= score_threshold]
-        samples.extend(random.choices(population=eligible_population, k=n_samples_per_quanitile))
+        samples.extend(rng.choices(population=eligible_population, k=n_samples_per_quanitile))
 
     # Shuffle samples to decrease correlations between adjacent samples
     if shuffle:
-        random.shuffle(samples)
+        rng.shuffle(samples)
 
     return samples[:n_sample]  # in case there are slightly too many samples
