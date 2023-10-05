@@ -10,6 +10,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ### Changed
 
 - Sanitize molecules from GraphGA ([#5](https://github.com/AustinT/mol_ga/pull/5)) ([@austint])
+- GraphGA molecule generation now independent of batch size ([#5](https://github.com/AustinT/mol_ga/pull/5)) ([@austint])
 
 ### Added
 
