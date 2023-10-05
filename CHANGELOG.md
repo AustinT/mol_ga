@@ -14,6 +14,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Fix import error for python<3.8 ([#3](https://github.com/AustinT/mol_ga/pull/3)) ([@austint])
+- Fix unintended use of system random in sampling ([#4](https://github.com/AustinT/mol_ga/pull/4)) ([@austint])
 
 ## [0.1.0] - 2023-09-05
 
