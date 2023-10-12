@@ -148,6 +148,10 @@ python -m pytest
 
 Please make sure tests pass on your PR.
 
+### Publishing
+
+Currently the package is set up to publish on PyPI when new tagged releases are created.
+
 ## Misc Information
 
 ### Are GraphGAs useful for my problem?
