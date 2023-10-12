@@ -9,10 +9,16 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Changed
 
+### Added
+
+### Fixed
+
+## [0.1.1]
+
+### Changed
+
 - Sanitize molecules from GraphGA ([#5](https://github.com/AustinT/mol_ga/pull/5)) ([@austint])
 - GraphGA molecule generation now independent of batch size ([#5](https://github.com/AustinT/mol_ga/pull/5)) ([@austint])
-
-### Added
 
 ### Fixed
 
@@ -24,7 +30,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 :seedling: Initial public release.
 
-[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.0
 
 [@austint]: https://github.com/AustinT
