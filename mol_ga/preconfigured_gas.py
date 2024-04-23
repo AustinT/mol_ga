@@ -4,7 +4,7 @@ import heapq
 
 from mol_ga.general_ga import GAResults, run_ga_maximization
 from mol_ga.graph_ga.gen_candidates import graph_ga_blended_generation
-from mol_ga.sample_population import uniform_qualitle_sampling
+from mol_ga.sample_population import uniform_quantile_sampling
 
 
 def default_ga(
@@ -13,7 +13,7 @@ def default_ga(
     max_generations: int,
     offspring_size: int,
     offspring_gen_func=graph_ga_blended_generation,
-    population_sampling_function=uniform_qualitle_sampling,
+    population_sampling_function=uniform_quantile_sampling,
     population_size=10_000,
     **kwargs,
 ) -> GAResults:
