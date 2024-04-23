@@ -13,6 +13,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix error in quantile sampling if NaNs are present ([#8](https://github.com/AustinT/mol_ga/pull/8)) ([@austint])
+
 ## [0.1.1]
 
 ### Changed
