@@ -148,7 +148,10 @@ def crossover_non_ring(parent_A, parent_B, rng: Random, **mol_ok_kwargs):
         new_mol_trial = []
         for fa in fragments_A:
             for fb in fragments_B:
-                new_mol_trial.append(rxn.RunReactants((fa, fb))[0])
+                product_list = rxn.RunReactants((fa, fb))
+                if not product_list:
+                    continue
+                new_mol_trial.append(product_list[0])
 
         new_mols = []
         for mol in new_mol_trial:
