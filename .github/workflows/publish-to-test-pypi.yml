@@ -2,7 +2,11 @@
 # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 name: Publish mol_ga to PyPI and TestPyPI
 
-on: release
+# Only run this workflow when a release is *published*.
+# Previously this would run on any release event, causing it to run twice by mistake.
+on:
+  release:
+    types: [published]
 
 jobs:
   build:

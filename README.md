@@ -125,6 +125,8 @@ This is an open-source project and PRs are welcome!
 
 **!!PLEASE READ THIS SECTION BEFORE MAKING A PR!!**
 
+More information is in `DEVELOPMENT.md`.
+
 ### Pre-commit
 
 Use pre-commit to enforce formatting, large file checks, etc.
@@ -147,10 +149,6 @@ python -m pytest
 ```
 
 Please make sure tests pass on your PR.
-
-### Publishing
-
-Currently the package is set up to publish on PyPI when new tagged releases are created.
 
 ## Misc Information
 
