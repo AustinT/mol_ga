@@ -14,6 +14,7 @@ Key features:
 - ⚙️ Minimal dependencies. Should be compatible with nearly all python environments.
 - ⛓️ Supports parallel mutation/crossover with `joblib`.
 - 🎓 Smart caching of objective function (avoids duplicate calls).
+- ⏯️ Stateless: can interleave GA steps with other control logic without side effects
 
 ## Installation
 
@@ -21,6 +22,12 @@ Install from [PyPI](https://pypi.org/project/mol-ga/):
 
 ```bash
 pip install mol_ga
+```
+
+Alternatively, to install the latest version from GitHub, run
+
+```bash
+pip install https://github.com/AustinT/mol_ga.git
 ```
 
 ## Why mol_ga?
@@ -90,8 +97,6 @@ Output (remember it is random so results will vary between runs and between mach
 
 ## Citation
 
-There is no citation for this specific library, but I will put a paper on arXiv soon.
-
 To make this library, I mainly drew on the algorithm from Jensen (2019)
 and the code from the GuacaMol paper.
 Please cite these papers if you use this library in an academic publication:
@@ -118,6 +123,10 @@ Please cite these papers if you use this library in an academic publication:
   publisher={ACS Publications}
 }
 ```
+
+I first used this library in a
+[benchmarking paper on arXiv](https://arxiv.org/abs/2310.09267).
+You can also cite this paper.
 
 ## Contributing
 
@@ -174,6 +183,28 @@ Here are my responses to various objections to GAs:
    but it is possible for something to slip through.
    The GA might behave weirdly if the function returns different values for different SMILES
    strings for the same molecule.
+
+### What do you mean by "stateless"?
+
+Under mild assumptions you can call the general `run_ga_maximization` function
+with `max_generations=N` and the effect
+will be the same as calling it `N` times
+with `max_generations=1`. This allows you to add extra logic to the GA loop without
+modifying the library (even though it might be a bit awkward).
+See [this GitHub issue](https://github.com/AustinT/mol_ga/issues/11) for an
+example.
+
+Truly stateless behavior is not 100% guaranteed though. At the very least, you would need the following:
+
+1. The starting population needs to be set to the ending population from the previous GA round.
+2. The same random number generator should be passed in
+3. The population selection function should be "idempotent":
+  ie calling it twice is the same as calling it once.
+  This is necessary because calling `run_ga_maximization` in a loop will cause it to be called twice.
+  Making the population selection function idempotent is less difficult than it may seem though:
+  any function which will not change the population if the size is below the maximum
+  will be idempotent.
+4. You must wrap the objective function in a `CachedBatchFunction`
 
 ### Why the emphasis on batched evaluation?
 
