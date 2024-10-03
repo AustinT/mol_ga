@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-import math
 import random
 from dataclasses import dataclass
 from pprint import pformat
@@ -83,19 +82,13 @@ def run_ga_maximization(
     start_cache_size = len(scoring_func.cache)
     logger.debug(f"Starting cache made, has size {start_cache_size}")
 
-    def score_and_check(smiles_list: list[str]) -> list[float]:
-        """Convenience function to calculate scores AND check validity."""
-        outputs = scoring_func.eval_batch(smiles_list)
-        assert not any(math.isnan(v) for v in outputs), "NaN score found, will cause undefined behaviour."
-        return outputs
-
     # ============================================================
     # 1: prepare initial population
     # ============================================================
 
     # Score initial SMILES
     population_smiles = list(starting_population_smiles)
-    population_scores = score_and_check(population_smiles)
+    population_scores = scoring_func.eval_batch(population_smiles)
     _starting_max_score = max(population_scores)
     logger.debug(f"Initial population scoring done. Pop size={len(population_smiles)}, Max={_starting_max_score}")
     population = list(zip(population_scores, population_smiles))
@@ -135,7 +128,7 @@ def run_ga_maximization(
 
         # Score new population
         logger.debug("\tCalling scoring function...")
-        population_scores = score_and_check(population_smiles)
+        population_scores = scoring_func.eval_batch(population_smiles)
         logger.debug(f"\tScoring done, best score now {max(population_scores)}.")
 
         # Select new population
