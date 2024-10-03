@@ -13,6 +13,16 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+## [0.1.3]
+
+### Fixed
+
+- Checked for empty population at input ([#13](https://github.com/AustinT/mol_ga/pull/13)) ([@austint])
+
+## [0.1.2]
+
+### Fixed
+
 - Fix error in quantile sampling if NaNs are present ([#8](https://github.com/AustinT/mol_ga/pull/8)) ([@austint])
 
 ## [0.1.1]
@@ -32,7 +42,9 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 :seedling: Initial public release.
 
-[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.3
+[0.1.2]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.2
 [0.1.1]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.0
 
