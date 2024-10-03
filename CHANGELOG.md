@@ -13,6 +13,12 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+## [0.2.0]
+
+### Fixed
+
+- Fixed occasional crash in `crossover.py` ([#14](https://github.com/AustinT/mol_ga/pull/14)) ([@austint])
+
 ## [0.1.3]
 
 ### Fixed
@@ -42,7 +48,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 :seedling: Initial public release.
 
-[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/AustinT/mol_ga/releases/tag/v0.2.0
 [0.1.3]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.3
 [0.1.2]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.2
 [0.1.1]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.1
