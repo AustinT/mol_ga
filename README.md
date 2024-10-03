@@ -173,7 +173,9 @@ Here are my responses to various objections to GAs:
 - _"I am doing mult-objective optimization"_: try scalarizing your problem with multiple sets of weights to explore the space of trade-offs.
 - _"I am just trying to generate novel molecules without any objective function."_: just use a constant objective function and the GA will continually produce new molecules.
 
-### Limitations/assumptions of the package
+### Assumptions made implicitly by this package
+
+Generally this package assumes that:
 
 1. Objective function is **deterministic** (always outputs the same value for the same SMILES).
    If the function passed in is not deterministic, the GA will end up using the first value it returns.
@@ -183,6 +185,9 @@ Here are my responses to various objections to GAs:
    but it is possible for something to slip through.
    The GA might behave weirdly if the function returns different values for different SMILES
    strings for the same molecule.
+
+If any of these assumptions are not satisfied, this package might still run without crashing,
+but you could see unexpected behavior.
 
 ### What do you mean by "stateless"?
 
@@ -233,3 +238,16 @@ I've tried to make many improvements:
 - Because of the sampling change above, it can handle large population sizes (e.g. 10k). This helps prevent the population collapsing to a bunch of similar molecules.
 - Removed some [weird lines of code](https://github.com/BenevolentAI/guacamol_baselines/blob/44d24c53f3acf9266eb2fb06dbff909836549291/graph_ga/crossover.py#L70-L84) that effectively prevents the algorithm from producing molecules with more than 50 atoms.
   While it is true that most drugs are not this large, the algorithm should not be inherently incapable of producing molecules of more than a certain size!
+
+### Limitations / known issues
+
+In no particular order:
+
+- **Synthesizability**: there is no guarantee that the molecules produced will be
+  synthesizable (or even "nice"). If you don't like the molecules that you see
+  you will need to either 1) change the scoring function or 2) write your own
+  offspring generation method which avoids generating poor molecules.
+- **Slow for large molecules**: the mutation operations in the default GA
+  are more expensive for large molecules, which can cause the GA to run
+  extremely slowly. If you encounter this, one option is to add a penalty
+  for molecule size into the scoring function.
