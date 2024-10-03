@@ -73,6 +73,8 @@ def run_ga_maximization(
     logger.info("Starting GA maximization...")
     num_samples_per_generation = num_samples_per_generation or 2 * offspring_size
     rng = rng or random.Random()
+    if len(starting_population_smiles) == 0:
+        raise ValueError("Must input non-empty set of starting SMILES.")
 
     # Create the cached scoring function
     if not isinstance(scoring_func, CachedBatchFunction):

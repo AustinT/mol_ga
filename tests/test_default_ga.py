@@ -82,3 +82,16 @@ def test_improvement():
     best_value = max(output.population)[0]
     best_starting_value = max(output.scoring_func_evals[s] for s in start_population)
     assert best_value - best_starting_value >= 0.05  # small but non-trivial improvement
+
+
+def test_empty_population():
+    """
+    Test that passing an empty population raises an error.
+    """
+    with pytest.raises(ValueError):
+        default_ga(
+            starting_population_smiles=[],
+            scoring_function=batch_qed,
+            max_generations=10,
+            offspring_size=100,
+        )
