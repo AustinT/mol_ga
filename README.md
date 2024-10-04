@@ -251,3 +251,12 @@ In no particular order:
   are more expensive for large molecules, which can cause the GA to run
   extremely slowly. If you encounter this, one option is to add a penalty
   for molecule size into the scoring function.
+
+## Development status
+
+At the moment [@austint] is the sole maintainer of this package.
+Currently there are no plans to add new functionality, although
+PRs are welcome, and [@austint] will try to address any bugs
+or issues in a timely manner.
+
+[@austint]: https://github.com/AustinT
