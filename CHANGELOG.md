@@ -9,6 +9,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- Removed size constraint in `crossover.py` which could sometimes be negative ([#16](https://github.com/AustinT/mol_ga/pull/16)) ([@austint]). Thanks [@alstonlo] for pointing this out.
+
 ### Added
 
 ### Fixed
@@ -56,3 +58,4 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 [0.1.0]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.0
 
 [@austint]: https://github.com/AustinT
+[@alstonlo]: https://github.com/alstonlo

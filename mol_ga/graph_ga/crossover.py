@@ -75,16 +75,16 @@ def mol_ok(
     mol,
     rng: Random,
     min_num_atoms=1,
-    mean_num_atoms=40.0,
-    std_num_atoms=1e3,  # by default, no real limit on maximum mol size
 ):
+    """
+    Misc checks to see if a molecule is OK.
+
+    NOTE: edited from the original version of Graph GA to remove the size constraints.
+    If you want size constraints, put it into the objective function.
+    """
     try:
         Chem.SanitizeMol(mol)
-        target_size = rng.gauss(mean_num_atoms, std_num_atoms)
-        if mol.GetNumAtoms() > min_num_atoms and mol.GetNumAtoms() < target_size:
-            return True
-        else:
-            return False
+        return mol.GetNumAtoms() > min_num_atoms
     except ValueError:
         return False
 
