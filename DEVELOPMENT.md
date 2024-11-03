@@ -10,6 +10,6 @@ Steps in release process are:
 
 1. Double check that tests pass
 2. Double check linting (`pre-commit run --all`)
-3. Publish GitHub release
-4. Push an updated CHANGELOG with link to new version.
+3. Push an updated CHANGELOG with link to new version you are about to release.
   Make sure the links at the bottom of the document are updated appropriately!
+4. Publish GitHub release and ensure that the workflows pass.
