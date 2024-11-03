@@ -9,11 +9,15 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Removed size constraint in `crossover.py` which could sometimes be negative ([#16](https://github.com/AustinT/mol_ga/pull/16)) ([@austint]). Thanks [@alstonlo] for pointing this out.
-
 ### Added
 
 ### Fixed
+
+## [0.2.1]
+
+### Changed
+
+- Removed size constraint in `crossover.py` which could sometimes be negative ([#16](https://github.com/AustinT/mol_ga/pull/16)) ([@austint]). Thanks [@alstonlo] for pointing this out.
 
 ## [0.2.0]
 
@@ -50,7 +54,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 :seedling: Initial public release.
 
-[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/AustinT/mol_ga/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/AustinT/mol_ga/releases/tag/v0.2.1
 [0.2.0]: https://github.com/AustinT/mol_ga/releases/tag/v0.2.0
 [0.1.3]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.3
 [0.1.2]: https://github.com/AustinT/mol_ga/releases/tag/v0.1.2
